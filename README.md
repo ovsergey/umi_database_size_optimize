@@ -15,8 +15,7 @@ http://site.ru/0_clear_db.php?debug=2&limit=500
 http://site.ru/0_clear_db.php?debug=2&refresh=1&limit=500
 http://site.ru/0_clear_db.php?cron=1&limit=1000
 
-refresh - будет автоматом чистить до конца
-cron - для использования скрипта по расписанию
+refresh - будет автоматом чистить до конца, cron - для использования скрипта по расписанию
 
 Вариант 2:
 
