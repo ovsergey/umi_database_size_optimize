@@ -82,6 +82,14 @@ ORDER BY cnt DESC;";
 			$res = l_mysql_query($sql);
 			$i=20;
 			while ($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
+	
+				$name = $row['name'];
+				if(strpos($name, "i18n::") !== false)
+				{
+					$name = str_replace("i18n::", "", $name);
+					$name = ulangStream::getLabelSimple($name);
+				}
+
 				if ($i == 20) {
 					echo '<div class="row" style="display: table-row;"><span style="display: table-cell; padding: 0 50px 0 0;">Тип данных</span><span style="display: table-cell; padding: 0 50px 0 0;">Наименование</span><span style="display: table-cell; padding: 0 50px 0 0; text-align: right;">Кол-во объектов</span>';
 					if ($_GET['getdatadb'] == '2') {
@@ -90,7 +98,7 @@ ORDER BY cnt DESC;";
 					}
 					echo '</div>';
 				}
-				echo '<div class="row" style="display: table-row;"><span class="type_id" style="display: table-cell; padding: 0 50px 0 0;">'.$row['type_id'].'</span><span style="display: table-cell; padding: 0 50px 0 0;">'.$row['name'].'</span><span class="cnt" rel="'.$row['cnt'].'" name="'.$row['type_id'].'" style="display: table-cell; padding: 0 50px 0 0; text-align: right;">'.number_format($row['cnt'], 0, ',', ' ').'</span>';
+				echo '<div class="row" style="display: table-row;"><span class="type_id" style="display: table-cell; padding: 0 50px 0 0;">'.$row['type_id'].'</span><span style="display: table-cell; padding: 0 50px 0 0;">'.$name.'</span><span class="cnt" rel="'.$row['cnt'].'" name="'.$row['type_id'].'" style="display: table-cell; padding: 0 50px 0 0; text-align: right;">'.number_format($row['cnt'], 0, ',', ' ').'</span>';
 
 				if ($_GET['getdatadb'] == '2') {
 					echo '<span class="size" rel="'.$cnt_records[$row['type_id']].'" name="'.$row['type_id'].'" style="display: table-cell; padding: 0 50px 0 0; text-align: right;">'.number_format($cnt_records[$row['type_id']], 0, ',', ' ').'</span>';
@@ -773,7 +781,7 @@ div#result {
 						if(obj.hasClass('open')) {
 							obj.prev().prev().prev().css({'background-position':'48px 16px'});
 							if (!obj.hasClass('loaded')) {
-								$('<span id="loading' + id + '"><IMG SRC="/images/loading.gif" BORDER="0"></span><span id="proc' + id + '"></span><span id="log' + id + '"></span><div id="cat' + id + '" class="box" style="margin: -17px 0 -15px ' + obj.prev().prev().offset().left +  'px;"></div>').insertAfter(obj.next().next());
+								$('<span id="loading' + id + '"><IMG SRC="/images/loading.gif" BORDER="0"></span><span id="proc' + id + '"></span><span id="log' + id + '"></span><div id="cat' + id + '" class="box" style="margin: -17px 0 -15px ' + ((obj.prev().prev().offset().left > 30) ? 30 : obj.prev().prev().offset().left) +  'px;"></div>').insertAfter(obj.next().next());
 								getnewitemlist(id, 'category', 0, 1000);
 							}else{
 								$('#cat' + id).slideDown();
