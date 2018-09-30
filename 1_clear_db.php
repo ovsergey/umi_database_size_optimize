@@ -137,9 +137,10 @@
 								$orderId = $order->getId();
 
 								$sql = "SELECT `obj_id`, `entrytime`, `expire` FROM `cms3_objects_expiration` WHERE  obj_id = {$orderId};";
-								$res = mysql_query($sql);
+								//$res = mysql_query($sql);
+								$res = l_mysql_query($sql);
 								if ($res) {
-									if (mysql_num_rows($res) < 1) {
+									if (mysqli_num_rows($res) < 1) {
 										echo ' - add to expiration';
 										//if (!$debug) $expiration->add($order->getId(), 1);
 										if (!$debug) add($order->getId(), 1);
@@ -178,10 +179,11 @@
 			$sql = "SELECT `obj_id`, `entrytime`, `expire`, guid, type_id FROM `cms3_objects_expiration` INNER JOIN `cms3_objects` ON obj_id = id WHERE  type_id = {$orderTypeId} AND (`entrytime`+`expire`) < {$now} LIMIT 0, {$limit};";
 			if($debug) echo '<br><br>'. $sql;
 
-			$res = mysql_query($sql);
+			//$res = mysql_query($sql);
+			$res = l_mysql_query($sql);
 			if ($res) {
 				$objects = umiObjectsCollection::getInstance();
-				while ($row = mysql_fetch_assoc($res)) {
+				while ($row = mysqli_fetch_assoc($res)) {
 					echo '<br>'.$row['obj_id'];
 					echo ', дата: ' . date('d.m.Y H:i', $row['entrytime']);
 					echo ', время хранения: '.( $row['expire'] / 86400). ' дней';
@@ -199,10 +201,11 @@
 			$sql = "SELECT `obj_id`, `entrytime`, `expire`, guid, type_id FROM `cms3_objects_expiration` INNER JOIN `cms3_objects` ON obj_id = id WHERE  type_id = {$customerTypeId} AND (`entrytime`+`expire`) < {$now} LIMIT 0, {$limit};";
 			if($debug) echo '<br><br>'. $sql;
 
-			$res = mysql_query($sql);
+			//$res = mysql_query($sql);
+			$res = l_mysql_query($sql);
 			if ($res) {
 				$objects = umiObjectsCollection::getInstance();
-				while ($row = mysql_fetch_assoc($res)) {
+				while ($row = mysqli_fetch_assoc($res)) {
 					echo '<br>'.$row['obj_id'];
 					echo ', дата: ' . date('d.m.Y H:i', $row['entrytime']);
 					echo ', время хранения: '.( $row['expire'] / 86400). ' дней';
@@ -316,7 +319,7 @@ function get_vars ($file){
 			LIMIT 1
 SQL;
 			$res = l_mysql_query($sql);
-			return mysql_num_rows($res) > 0;
+			return mysqli_num_rows($res) > 0;
 		}
 
 		function getExpiredObjectsByTypeId($typeId, $limit = 50) {
@@ -343,8 +346,8 @@ SQL;
 
 			$result = array();
 			$res = l_mysql_query($sql);
-			if (mysql_numrows($res) > 0) {
-				while($row = mysql_fetch_assoc($res)) {
+			if (mysqli_num_rows($res) > 0) {
+				while($row = mysqli_fetch_assoc($res)) {
 					$result[] = $row['obj_id'];
 				}
 			}
